@@ -1,31 +1,10 @@
 <script lang="ts" setup>
 import { useStore } from 'vuex'
 import { key, MassData } from '../store'
-import { computed, ref, watch } from 'vue'
+import { ref } from 'vue'
 import { ArrowUpBold, ArrowDownBold, Delete } from '@element-plus/icons-vue'
-
-function getTypeName(type: number) {
-  switch (type) {
-    case 1:
-      return 'Start'
-    case 2:
-      return 'Goal'
-    case 3:
-      return 'Lucky'
-    case 4:
-      return 'UnLucky'
-    case 5:
-      return 'findWork'
-    case 6:
-      return 'work'
-    case 7:
-      return 'marry'
-    case 8:
-      return 'birth'
-    default:
-      return '-'
-  }
-}
+import { getTypeName } from '../libs/common'
+import { up , down, remove} from '../libs/tableUtil'
 
 const store = useStore(key)
 const items = ref<MassData[]>([])
@@ -35,37 +14,6 @@ store.subscribe(mutation => {
     items.value = store.state.massDatum
   }
 })
-
-function up(index: number) {
-  const datum = store.state.massDatum
-  if (index === 0) return
-
-  const data = datum[index]
-  const prevData = datum[index - 1]
-  datum.splice(index - 1, 1, data)
-  datum.splice(index, 1, prevData)
-
-  store.commit('update', datum)
-}
-
-function down(index: number) {
-  const datum = store.state.massDatum
-  if (index === datum.length - 1) return
-
-  const data = datum[index]
-  const nextData = datum[index + 1]
-  datum.splice(index + 1, 1, data)
-  datum.splice(index, 1, nextData)
-
-  store.commit('update', datum)
-}
-
-function remove(index: number) {
-  const datum = store.state.massDatum
-  datum.splice(index, 1)
-
-  store.commit('update', datum)
-}
 
 </script>
 
